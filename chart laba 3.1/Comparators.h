@@ -2,6 +2,7 @@
 #include "ComplexNumber.h"
 #include "Student.h"
 #include "Teacher.h"
+#include <string.h>
 /// <summary>
 /// first > second -> 1
 /// first == second -> 2 
@@ -37,8 +38,8 @@ int (*cmpComplexNumber[])(ComplexNumber, ComplexNumber) = { cmpComplexNumberRE,c
 /// <returns></returns>
 int cmpStudentFirstName(Student first, Student second) 
 {
-	if (first.GetFirstName() == second.GetFirstName()) { return 2; }
-	return first.GetFirstName() > second.GetFirstName();
+	if (strcmp(first.GetFirstName(),second.GetFirstName())==0) { return 2; }
+	return strcmp(first.GetFirstName(), second.GetFirstName())==1;
 }
 /// <summary>
 /// first > second -> 1 
@@ -49,8 +50,8 @@ int cmpStudentFirstName(Student first, Student second)
 /// <returns></returns>
 int cmpStudentLastName(Student first, Student second) 
 {
-	if (first.GetLastName() == second.GetLastName()) { return 2; }
-	return first.GetLastName() > second.GetLastName();
+	if (strcmp(first.GetLastName(), second.GetLastName()) == 0) { return 2; }
+	return strcmp(first.GetLastName(), second.GetLastName()) == 1;
 }
 /// <summary>
 /// first > second -> 1 
@@ -75,8 +76,8 @@ int (*cmpStudent[])(Student, Student) = { cmpStudentFirstName,cmpStudentLastName
 /// <returns></returns>
 int cmpTeacherFirstName(Teacher first, Teacher second)
 {
-	if (first.GetFirstName() == second.GetFirstName()) { return 2; }
-	return first.GetFirstName() > second.GetFirstName();
+	if (strcmp(first.GetFirstName(), second.GetFirstName()) == 0) { return 2; }
+	return strcmp(first.GetFirstName(), second.GetFirstName()) == 1;
 }
 /// <summary>
 /// first > second -> 1
@@ -87,8 +88,8 @@ int cmpTeacherFirstName(Teacher first, Teacher second)
 /// <returns></returns>
 int cmpTeacherLastName(Teacher first, Teacher second)
 {
-	if (first.GetLastName() == second.GetLastName()) { return 2; }
-	return first.GetLastName() > second.GetLastName();
+	if (strcmp(first.GetLastName(), second.GetLastName()) == 0) { return 2; }
+	return strcmp(first.GetLastName(), second.GetLastName()) == 1;
 }
 /// <summary>
 /// first > second -> 1
@@ -111,7 +112,13 @@ int cmpTeacherId(Teacher first, Teacher second)
 /// <returns></returns>
 int cmpTeacherSubject(Teacher first, Teacher second) 
 {
-	if (first.GetSubject() == second.GetSubject()) { return 2; }
-	return first.GetSubject() > second.GetSubject();
+	if (strcmp(first.GetSubject(),second.GetSubject())==0) { return 2; }
+	return strcmp(first.GetSubject(), second.GetSubject()) == 1;
 }
 int (*cmpTeacher[])(Teacher, Teacher) = { cmpTeacherFirstName,cmpTeacherLastName,cmpTeacherId,cmpTeacherSubject };
+
+int cmpStr(char* first, char* second)
+{
+	if (strcmp(first, second) == 0) { return 2; }
+	return strcmp(first, second) == 1;
+}

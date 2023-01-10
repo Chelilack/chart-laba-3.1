@@ -11,9 +11,10 @@ enum errorsCode
 	NULLPointer,
 	NegativeSize,
 	NegativeCount,
-	WrongDecision
+	WrongDecision,
+	ItemDoesNotExist
 };
-void errors(int errorCode, const char* nameFunction)
+inline void errors(int errorCode, const char* nameFunction)
 {
 	if (errorCode == IndexOutOfRange) { cout << "Index out of range in " << nameFunction << endl; }
 	else if (errorCode == NegativeIndex) { cout << "NegativeIndex in " << nameFunction << endl; }
@@ -21,4 +22,5 @@ void errors(int errorCode, const char* nameFunction)
 	else if (errorCode == NULLPointer) { cout << "NULLPointer in " << nameFunction << endl; }
 	else if (errorCode == NegativeSize) { cout << "NegativeSize in " << nameFunction << endl; }
 	else if (errorCode == WrongDecision) { cout << "Wrong Decision " << nameFunction << endl; }
+	else if (errorCode == ItemDoesNotExist) { cout << "Item Does Not Exist " << nameFunction << endl; }
 }

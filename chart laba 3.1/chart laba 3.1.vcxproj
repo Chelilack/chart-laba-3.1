@@ -124,6 +124,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Gistogramma.cpp" />
     <ClCompile Include="laba 3.1.cpp" />
     <ClCompile Include="MyForm.cpp" />
   </ItemGroup>
@@ -135,7 +136,13 @@
     <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="DynamicArrayTests.h" />
     <ClInclude Include="Errors.h" />
+    <ClInclude Include="Gistogramma.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="graph.h" />
     <ClInclude Include="HashTable.h" />
+    <ClInclude Include="HashTableTests.h" />
+    <ClInclude Include="IDictionary.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedListSequence.h" />
@@ -147,10 +154,14 @@
     </ClInclude>
     <ClInclude Include="Sequence.h" />
     <ClInclude Include="SortsTests.h" />
+    <ClInclude Include="stack.h" />
     <ClInclude Include="Student.h" />
     <ClInclude Include="Teacher.h" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Gistogramma.resx">
+      <DependentUpon>Gistogramma.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MyForm.resx">
       <DependentUpon>MyForm.h</DependentUpon>
     </EmbeddedResource>

@@ -1,5 +1,7 @@
 #pragma once
 #include "Errors.h"
+#include <string.h>
+
 using namespace std;
 
 template<typename T>
@@ -119,9 +121,8 @@ void DynamicArray<T>::Set(int index, T value)
 		errors(NegativeIndex, "DynamicArray->Set()");
 		throw;
 	}
-	else if (index > this->GetCount()) { errors(IndexOutOfRange, "DynamicArray->Set()"); throw; }
 	this->count += 1;
-	if (this->count + 1 > this->size)
+	while (this->count + 1 > this->size)
 	{
 		this->Resize((this->GetSize()+1)*2);
 	}
@@ -218,7 +219,8 @@ void DynamicArray<T>::MergeSort()
 		}
 		size +=size;
 	}
-}template<typename T>
+}
+template<typename T>
 void DynamicArray<T>:: InsideMerge(int j,int  r,int  size,int (*cmp)(T, T))
 {
 	if (j + r < this->count)
@@ -261,48 +263,60 @@ void DynamicArray<T>::MergeSort(int (*cmp)(T, T))
 template<typename T>
 void DynamicArray<T>::ShakerSort()
 {
-	bool swapped;
-	bool stop;
-	while (stop==false) {
-		for (int j = this->count;j>0;j--) 
-		{
-			swapped = false;
-			for (int i=0;i<j;i++) 
+	bool swapped = true;
+	int start = 0;
+	int end = this->count - 1;
+	while (swapped) 
+	{
+		swapped = false;
+		for (int i = start; i < end; ++i) {
+			if (this->arrayPointer[i] > this->arrayPointer[i + 1])
 			{
-				if (this->arrayPointer[i] > this->arrayPointer[i + 1])
-				{
-					Swap(i,i+1);
-					swapped = true;
-				}
-			}
-			if (!swapped)
-			{
-				stop = true;
+				Swap(i, i + 1);
+				swapped = true;
 			}
 		}
+		if (!swapped)
+			return;
+		swapped = false;
+		--end;
+		for (int i = end - 1; i >= start; --i) {
+			if (this->arrayPointer[i] > this->arrayPointer[i + 1])
+			{
+				Swap(i, i + 1);
+				swapped = true;
+			}
+		}
+		++start;
 	}
 }
 template<typename T>
 void DynamicArray<T>::ShakerSort(int (*cmp)(T, T))
 {
-	bool swapped;
-	bool stop;
-	while (stop == false) {
-		for (int j = this->count; j > 0; j--)
-		{
-			swapped = false;
-			for (int i = 0; i < j; i++)
+	bool swapped = true;
+	int start = 0;
+	int end = this->count - 1;
+	while (swapped)
+	{
+		swapped = false;
+		for (int i = start; i < end; ++i) {
+			if (cmp(this->arrayPointer[i], this->arrayPointer[i + 1]) == 1)
 			{
-				if (cmp(this->arrayPointer[i], this->arrayPointer[i + 1])==1)
-				{
-					Swap(i, i + 1);
-					swapped = true;
-				}
-			}
-			if (!swapped)
-			{
-				stop = true;
+				Swap(i, i + 1);
+				swapped = true;
 			}
 		}
+		if (!swapped)
+			return;
+		swapped = false;
+		--end;
+		for (int i = end - 1; i >= start; --i) {
+			if (cmp(this->arrayPointer[i], this->arrayPointer[i + 1]) == 1)
+			{
+				Swap(i, i + 1);
+				swapped = true;
+			}
+		}
+		++start;
 	}
 }

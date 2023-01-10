@@ -7,6 +7,7 @@
 #include "DynamicArrayTests.h"
 #include "LinkedListTests.h"
 #include "LinkedListSequenceTests.h"
+#include "SortsTests.h"
 #include"ArraySequence.h"
 #include"LinkedListSequence.h"
 #include "Sequence.h"
@@ -17,6 +18,13 @@
 #include "Input.h"
 #include "Comparators.h"
 #include "MyForm.h"
+#include "Gistogramma.h"
+#include "HashTable.h"
+#include "IDictionary.h"
+#include "graph.h"
+#include <string>
+
+
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -33,6 +41,15 @@ void chart(int begin,int end, int step,float* items1, float* items2, float* item
 	
 	
 }
+[STAThread]
+void OpenGistogramma()
+{
+	Application::EnableVisualStyles();
+	Application::SetCompatibleTextRenderingDefault(false);
+	Application::Run(gcnew Gistogramma());
+	
+	
+}
 
 using namespace std;
 using namespace std::chrono;
@@ -46,20 +63,23 @@ enum SequenseType
 	SEQUENCE_STUDENT,
 	SEQUENCE_TEACHER,
 };
+
+Sequence<Sequence<int>*>* sequenceInt = new ArraySequence<Sequence<int>*>();
+Sequence<Sequence<float>*>* sequenceFloat = new ArraySequence<Sequence<float>*>();
+Sequence<Sequence<char*>*>* sequenceCharPtr = new ArraySequence<Sequence<char*>*>();
+Sequence<Sequence<ComplexNumber>*>* sequenceComplexNumber = new ArraySequence<Sequence<ComplexNumber>*>();
+Sequence<Sequence<Student>*>* sequenceStudent = new ArraySequence<Sequence<Student>*>();
+Sequence<Sequence<Teacher>*>* sequenceTeacher = new ArraySequence<Sequence<Teacher>*>();
+Sequence<Sequence<string>*>* sequenceNames = new ArraySequence<Sequence<string>*>();
+
 void menu()
 {
-	Sequence<Sequence<int>*>* sequenceInt = new ArraySequence<Sequence<int>*>();
-	Sequence<Sequence<float>*>* sequenceFloat = new ArraySequence<Sequence<float>*>();
-	Sequence<Sequence<char*>*>* sequenceCharPtr = new ArraySequence<Sequence<char*>*>();
-	Sequence<Sequence<ComplexNumber>*>* sequenceComplexNumber = new ArraySequence<Sequence<ComplexNumber>*>();
-	Sequence<Sequence<Student>*>* sequenceStudent = new ArraySequence<Sequence<Student>*>();
-	Sequence<Sequence<Teacher>*>* sequenceTeacher = new ArraySequence<Sequence<Teacher>*>();
-	Sequence<Sequence<string>*>* sequenceNames = new ArraySequence<Sequence<string>*>();
+	int page = -1;
 	for (int i=0; i < 6; i++)
 	{
 		sequenceNames->Append(new LinkedListSequence<string>());
 	}
-	int page = -1;
+	
 	auto menuExistSequence = [&]()
 	{
 		if (sequenceCharPtr == 0 && sequenceComplexNumber == 0 && sequenceFloat == 0 && sequenceInt == 0 && sequenceStudent == 0 && sequenceTeacher == 0)
@@ -103,10 +123,12 @@ void menu()
 			cout << "|2.Do smth with sequence         |" << endl;
 			cout << "|3.Run Tests                     |" << endl;
 			cout << "|4.Chart                         |" << endl;
+			cout << "|5.Gistogramm                    |" << endl;
+			cout << "|6.Graph                         |" << endl;
 			cout << "|0.Exit                          |" << endl;
 			cout << "----------------------------------" << endl;
 			cin >> page;
-			while (page != 1 && page != 2 && page != 3 && page != 4 && page != 0)
+			while (page != 1 && page != 2 && page != 3 && page != 4 && page != 5&& page != 6 && page != 0)
 			{
 				cout << "try again!" << endl;
 				cin >> page;
@@ -326,19 +348,19 @@ void menu()
 						case 3:
 							if (typeSort == 1)
 							{
-								sequenceCharPtr->Append(sequenceCharPtr->Get(choice[1])->QuickSort());
+								sequenceCharPtr->Append(sequenceCharPtr->Get(choice[1])->QuickSort(cmpStr));
 							}
 							else if (typeSort == 2)
 							{
-								sequenceCharPtr->Append(sequenceCharPtr->Get(choice[1])->ShellSort());
+								sequenceCharPtr->Append(sequenceCharPtr->Get(choice[1])->ShellSort(cmpStr));
 							}
 							else if (typeSort == 3)
 							{
-								sequenceCharPtr->Append(sequenceCharPtr->Get(choice[1])->MergeSort());
+								sequenceCharPtr->Append(sequenceCharPtr->Get(choice[1])->MergeSort(cmpStr));
 							}
 							else if (typeSort == 4)
 							{
-								sequenceCharPtr->Append(sequenceCharPtr->Get(choice[1])->ShakerSort());
+								sequenceCharPtr->Append(sequenceCharPtr->Get(choice[1])->ShakerSort(cmpStr));
 							}
 							printf("sequenceCharPtr sorted");
 							break;
@@ -650,6 +672,7 @@ void menu()
 			DynamicArrayTests* testArray = new DynamicArrayTests();
 			LinkedListSequenceTests* testListSequence = new LinkedListSequenceTests();
 			ArraySequenceTests* testArraySequence = new ArraySequenceTests();
+			SortsTests* testSort = new SortsTests();
 			testArray->Test();
 			std::this_thread::sleep_for(400ms);
 			testList->Test();
@@ -657,6 +680,8 @@ void menu()
 			testListSequence->Test();
 			std::this_thread::sleep_for(400ms);
 			testArraySequence->Test();
+			std::this_thread::sleep_for(400ms);
+			testSort->Test();
 			std::this_thread::sleep_for(400ms);
 			cout << "First Laba work correctly\n";
 			system("pause");
@@ -758,5 +783,244 @@ void menu()
 			}
 			page = -1;
 		}
+		else if (page == 5)
+		{
+			OpenGistogramma();
+			system("pause");
+			page = -1;
+		}
+		else if (page == 6) 
+		{
+			system("cls");
+			cout << "----------------------" << endl;
+			cout << "|1. Input            |" << endl;
+			cout << "|2. Print            |" << endl;
+			cout << "|0. Exit             |" << endl;
+			cout << "----------------------" << endl;
+			int miniPage;
+			cin >> miniPage;
+			Graph<int>* example;
+			while (miniPage != 1 && miniPage != 2 && miniPage != 3 && miniPage != 4 && miniPage != 5 && miniPage != 6 && miniPage != 0)
+			{
+				cout << "try again!" << endl;
+				cin >> miniPage;
+			}
+			if (miniPage == 1) 
+			{
+				cout << "Enter count :" << endl;
+				int count;
+				cin >> count;
+				example = new Graph<int>(count, false);
+				for (int i = 0; i < example->GetCountNode(); i++)
+				{
+					for (int j = 0; j < example->GetCountNode(); j++)
+					{
+						arc<int> pass ;
+						pass.fromNode = i;
+						pass.toNode = j;
+						cout << "Enter ("<<i<<','<<j<<"):" << endl;
+						cin >> pass.weight;
+						example->Insert(pass);
+					}
+				}
+			}
+			if (miniPage == 2) 
+			{
+				for (int i = 0; i < example->GetCountNode(); i++)
+				{
+					cout << "[";
+					for (int j = 0; j < example->GetCountNode(); j++)
+					{
+						cout << example->Get(i, j)<<" ";
+					}
+					cout << "]" << endl;
+				}
+				for (int i = 0; i < example->GetCountNode(); i++) 
+				{
+					cout << i << ":";
+					for (int j = 0; j < example->GetCountNode(); j++) 
+					{
+						if (example->Get(i,j)!= 0) 
+						{
+							cout << example->Get(i, j) << " ";
+						}
+						cout << endl;
+					}
+				}
+			}
+				system("pause");
+				page = -1;
+		}
 	}
 }
+int numberForGistogramm = 0;
+extern void InputSequence(int dataType, int count, int min, int max)
+{
+	cout << dataType << " " << count << endl;
+	string name = "ForGistogramm";
+	string number = std::to_string(numberForGistogramm++);
+	name.append("#");
+	name.append(number);
+	sequenceNames->Get(dataType)->Append(name);
+	if (dataType == 0)
+	{
+		auto inputedArray = InputIntArray(count, min, max);
+		sequenceInt->Append(new ArraySequence<int>(inputedArray.items, inputedArray.count));
+	}
+	else if (dataType == 1)
+	{
+		auto inputedArray = InputFloatArray(count, min, max);
+		sequenceFloat->Append(new ArraySequence<float>(inputedArray.items, inputedArray.count));
+	}
+	else if (dataType == 2)
+	{
+		auto inputedArray = InputComplexNumberArray(count, min, max, min, max);
+		sequenceComplexNumber->Append(new ArraySequence<ComplexNumber>(inputedArray.items, inputedArray.count));
+	}
+}
+extern void InputSequence(int dataType, int count)
+{
+		string name = "ForGistogramm";
+		string number = std::to_string(numberForGistogramm++);
+		name.append("#");
+		name.append(number);
+		sequenceNames->Get(dataType)->Append(name);
+		if (dataType == 3)
+		{
+			auto inputedArray = InputCharPtrArray(count);
+			sequenceCharPtr->Append(new ArraySequence<char*>(inputedArray.items, inputedArray.count));
+		}
+		else if (dataType == 4)
+		{
+			auto inputedArray = InputStudentArray(count);
+			sequenceStudent->Append(new ArraySequence<Student>(inputedArray.items, inputedArray.count));
+		}
+		else if (dataType == 5)
+		{
+			auto inputedArray = InputTeacherArray(count);
+			sequenceTeacher->Append(new ArraySequence<Teacher>(inputedArray.items, inputedArray.count));
+		}
+}
+	extern Dictionary<string,int>* GetPointsForGistogramm(int start,int end,int step,int dataType) 
+	{
+		Dictionary<string, int>* result = new Dictionary<string, int>(end-start);
+		if (dataType == 0)
+		{
+			if (start < step) { start=step; }
+			step = max(step, 1);
+			for (int i = start; i < end; i += step)
+			{
+				int countElements = 0;
+				for (int j = 0; j < sequenceInt->GetLast()->GetLength(); j++)
+				{
+					if (i - step < sequenceInt->GetLast()->Get(j) && sequenceInt->GetLast()->Get(j) < i + step)
+					{
+						countElements += 1;
+					}
+				}
+				cout << std::to_string(i) << " " << countElements << endl;
+				result->Add(std::to_string(i), countElements);
+
+			}
+			
+		}
+		else if (dataType == 1)
+		{			
+			if (start < step) { start = step / 2; }
+			for (int i = start; i < end; i += step + 1 - step % 2)
+			{
+				int countElements = 0;
+				for (int j = 0; j < sequenceFloat->GetLast()->GetLength(); j++)
+				{
+					if (i - step / 2 < sequenceFloat->GetLast()->Get(j) && sequenceFloat->GetLast()->Get(j) < i + step / 2)
+					{
+						countElements += 1;
+					}
+				}
+				cout << std::to_string(i) << " " << countElements << endl;
+				result->Add(std::to_string(i), countElements);
+
+			}
+			
+		}
+		else if (dataType == 2)
+		{
+			if (start < step) { start = step / 2; }
+			for (int i = start; i < end; i += step + 1 - step % 2)
+			{
+				int countElements = 0;
+				for (int j = 0; j < sequenceComplexNumber->GetLast()->GetLength(); j++)
+				{
+					if (i - step / 2 < sequenceComplexNumber->GetLast()->Get(j).GetRe() && sequenceComplexNumber->GetLast()->Get(j).GetRe() < i + step / 2)
+					{
+						countElements += 1;
+					}
+				}
+				cout << std::to_string(i) << " " << countElements << endl;
+				result->Add(std::to_string(i), countElements);
+
+			}
+		}
+		
+		return result;
+	}
+	extern  Dictionary<string, int>* GetPointsForGistogramm(int dataType)
+	{
+		Dictionary<string, int>* result = new Dictionary<string, int>(27);
+		const string x[] = { "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z" };
+
+		if (dataType == 3)
+		{
+			const char forcmp[] = "abcdefghijklmnopqrstuvwxyz";
+			for (int i = 0; i < 26; i++)
+			{
+				int countElements = 0;
+				for (int j = 0; j < sequenceCharPtr->GetLast()->GetLength(); j++)
+				{
+					if (sequenceCharPtr->GetLast()->Get(j)[0] == forcmp[i])
+					{
+						countElements += 1;
+					}
+				}
+				cout << x[i] << " " << countElements << endl;
+				result->Add(x[i], countElements);
+			}
+		}
+		else if (dataType == 4)
+		{
+			const char forcmp[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+			for (int i = 0; i < 26; i++)
+			{
+				int countElements = 0;
+				for (int j = 0; j < sequenceStudent->GetLast()->GetLength(); j++)
+				{
+					if (sequenceStudent->GetLast()->Get(j).GetFirstName()[0] == forcmp[i])
+					{
+						countElements += 1;
+					}
+				}
+				cout << x[i] << " " << countElements << endl;
+				result->Add(x[i], countElements);
+			}
+		}
+		else if (dataType == 5)
+		{
+			const char forcmp[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+			for (int i = 0; i < 26; i++)
+			{
+				int countElements = 0;
+				for (int j = 0; j < sequenceTeacher->GetLast()->GetLength(); j++)
+				{
+					if (sequenceTeacher->GetLast()->Get(j).GetFirstName()[0] == forcmp[i])
+					{
+						countElements += 1;
+					}
+				}
+				cout << x[i] << " " << countElements << endl;
+				result->Add(x[i], countElements);
+			}
+		}
+		return result;
+	}

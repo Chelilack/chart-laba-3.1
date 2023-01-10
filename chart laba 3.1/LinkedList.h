@@ -65,9 +65,12 @@ public:
 	void Remove(int index);
 	void InsideMerge(int j, int  r, int  m);
 	void MergeSort();
+	void InsideMergeStr(int j, int  r, int  m);
+	void MergeSortStr();
 	void InsideMerge(int j, int  r, int  m,int (*cmp)(T, T));
 	void MergeSort(int (*cmp)(T, T));
 	void ShakerSort();
+	void ShakerSortStr();
 	void ShakerSort(int (*cmp)(T, T));
 	//void Print();
 
@@ -341,6 +344,45 @@ void LinkedList<T>::Swap(int index1,int index2)
 	FindWithIndex(index2)->SetValue(pass);
 }
 template<typename T>
+void LinkedList<T>::InsideMergeStr(int j, int  r, int  size)
+{
+	if (j + r < this->length)
+	{
+		if (size == 1)
+		{
+			if (strcmp(this->FindWithIndex(j) , this->FindWithIndex(j + r))==1)
+			{
+				Swap(j, j + r);
+			}
+		}
+		else
+		{
+			size = size / 2;
+			InsideMergeStr(j, r, size);
+			if (j + r + size < this->length)
+			{
+				InsideMergeStr(j + size, r, size);
+			}
+			InsideMergeStr(j + size, r - size, size);
+		}
+	}
+}
+template<typename T>
+void LinkedList<T>::MergeSortStr()
+{
+	int size = 1;
+	int j = 0;
+	while (size < this->length)
+	{
+		j = 0;
+		while (j + size < this->length)
+		{
+			InsideMergeStr(j, size, size);
+			j += 2 * size;
+		}
+		size += size;
+	}
+}template<typename T>
 void LinkedList<T>::InsideMerge(int j, int  r, int  size)
 {
 	if (j + r < this->length)
@@ -420,28 +462,65 @@ void LinkedList<T>::MergeSort(int (*cmp)(T, T))
 		size += size;
 	}
 }
+
 template<typename T>
 void LinkedList<T>::ShakerSort()
 {
-	bool swapped;
-	bool stop;
-	while (stop == false) {
-		for (int j = this->length; j > 0; j--)
-		{
-			swapped = false;
-			for (int i = 0; i < j; i++)
+	bool swapped = true;
+	int start = 0;
+	int end = this->length- 1;
+	while (swapped)
+	{
+		swapped = false;
+		for (int i = start; i < end; ++i) {
+			if (this->FindWithIndex(i)->GetValue() > this->FindWithIndex(i + 1)->GetValue())
 			{
-				if (this->FindWithIndex(i)->GetValue()> this->FindWithIndex(i + 1)->GetValue())
-				{
-					Swap(i,i+1);
-					swapped = true;
-				}
-			}
-			if (!swapped)
-			{
-				stop = true;
+				Swap(i, i + 1);
+				swapped = true;
 			}
 		}
+		if (!swapped)
+			return;
+		swapped = false;
+		--end;
+		for (int i = end - 1; i >= start; --i) {
+			if (this->FindWithIndex(i)->GetValue() > this->FindWithIndex(i + 1)->GetValue())
+			{
+				Swap(i, i + 1);
+				swapped = true;
+			}
+		}
+		++start;
+	}
+}
+template<typename T>
+void LinkedList<T>::ShakerSortStr()
+{
+	bool swapped = true;
+	int start = 0;
+	int end = this->length - 1;
+	while (swapped)
+	{
+		swapped = false;
+		for (int i = start; i < end; ++i) {
+			if (cmpStr(this->FindWithIndex(i)->GetValue() ,this->FindWithIndex(i + 1)->GetValue()) == 1)
+			{
+				Swap(i, i + 1);
+				swapped = true;
+			}
+		}
+		if (!swapped)
+			return;
+		swapped = false;
+		--end;
+		for (int i = end - 1; i >= start; --i) {
+			if (cmpStr(this->FindWithIndex(i)->GetValue() ,this->FindWithIndex(i + 1)->GetValue()) == 1)
+			{
+				Swap(i, i + 1);
+				swapped = true;
+			}
+		}
+		++start;
 	}
 }
 template<typename T>
@@ -467,4 +546,5 @@ void LinkedList<T>::ShakerSort(int (*cmp)(T, T))
 			}
 		}
 	}
+
 }
